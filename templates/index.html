@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>レシピ検索アプリ</title>
+</head>
+<body>
+    <h1>レシピ検索</h1>
+
+    <form method="POST">
+        <label for="ingredients">食材（カンマ区切りで入力）:</label><br>
+        <input type="text" id="ingredients" name="ingredients" required><br><br>
+        <button type="submit">検索</button>
+    </form>
+
+    {% if recipes %}
+        <h2>おすすめレシピ</h2>
+        {% for recipe in recipes %}
+            <h3>{{ recipe.strMeal_ja }}</h3>
+            {% if recipe.strMealThumb %}
+                <img src="{{ recipe.strMealThumb }}" alt="{{ recipe.strMeal_ja }}" width="200">
+            {% endif %}
+            <h4>材料:</h4>
+            <ul>
+                {% for i in range(1, 21) %}
+                    {% if recipe['strIngredient' ~ i] and recipe['strMeasure' ~ i] %}
+                        <li>{{ recipe['strIngredient' ~ i + '_ja'] }}: {{ recipe['strMeasure' ~ i + '_ja'] }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <h4>作り方:</h4>
+            <p>{{ recipe.strInstructions_ja }}</p>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>レシピが見つかりませんでした。</p>
+    {% endif %}
+</body>
+</html>
